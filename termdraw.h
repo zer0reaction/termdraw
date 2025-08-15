@@ -23,6 +23,9 @@ extern int  termdraw_get_width(void);
 
 extern int  termdraw_input_get_char(char *c);
 
+extern int  termdraw_cursor_hide(void);
+extern int  termdraw_cursor_show(void);
+
 #endif /* TERMDRAW_H_ */
 
 
@@ -192,6 +195,16 @@ int termdraw_input_get_char(char *c)
     }
 
     return 0;
+}
+
+int termdraw_cursor_hide(void)
+{
+    return termdraw__output_buf_append("\033[?25l", 6);
+}
+
+int termdraw_cursor_show(void)
+{
+    return termdraw__output_buf_append("\033[?25h", 6);
 }
 
 
