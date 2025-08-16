@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include <unistd.h>
 #include <sys/ioctl.h>
@@ -25,6 +26,7 @@ extern int  termdraw_input_get_char(char *c);
 
 extern int  termdraw_cursor_hide(void);
 extern int  termdraw_cursor_show(void);
+extern int  termdraw_cursor_move(unsigned row, unsigned col);
 
 #endif /* TERMDRAW_H_ */
 
@@ -50,6 +52,10 @@ static struct
 };
 
 static struct termios termdraw__original_settings = {0};
+
+/* NOTE: row and col start from 1 */
+static unsigned termdraw__cursor_row = -1;
+static unsigned termdraw__cursor_col = -1;
 
 int termdraw_initialize(void)
 {
@@ -96,10 +102,12 @@ void termdraw_destroy(void)
     termdraw__output_buf.used = 0;
     termdraw__output_buf.capacity = 0;
 
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &termdraw__original_settings);
+    (void)tcsetattr(STDIN_FILENO,
+                    TCSAFLUSH,
+                    &termdraw__original_settings);
 }
 
-int termdraw__output_buf_append(const char *buf, size_t size)
+int termdraw__output_buf_append_str(const char *buf, size_t size)
 {
     if (termdraw__output_buf.used + size >
         termdraw__output_buf.capacity)
@@ -126,6 +134,29 @@ int termdraw__output_buf_append(const char *buf, size_t size)
 
     termdraw__output_buf.used += size;
     return 0;
+}
+
+int termdraw__output_buf_append_uint(unsigned n)
+{
+    unsigned i = 0;
+    unsigned len = 0;
+    char buf[32] = {0};
+
+    while (n > 0)
+    {
+        buf[len] = '0' + n % 10;
+        len++;
+        n /= 10;
+    }
+
+    for (i = 0; i < len / 2; i++)
+    {
+        char temp = buf[i];
+        buf[i] = buf[len - 1 - i];
+        buf[len - 1 - i] = temp;
+    }
+
+    return termdraw__output_buf_append_str(buf, len);
 }
 
 int termdraw__output_buf_flush(void)
@@ -163,7 +194,7 @@ int termdraw_display(void)
     return 0;
 }
 
-int termdraw_get_height(void)
+int termdraw_get_rows(void)
 {
     struct winsize ws;
 
@@ -175,7 +206,7 @@ int termdraw_get_height(void)
     return ws.ws_row;
 }
 
-int termdraw_get_width(void)
+int termdraw_get_cols(void)
 {
     struct winsize ws;
 
@@ -199,12 +230,51 @@ int termdraw_input_get_char(char *c)
 
 int termdraw_cursor_hide(void)
 {
-    return termdraw__output_buf_append("\033[?25l", 6);
+    return termdraw__output_buf_append_str("\033[?25l", 6);
 }
 
 int termdraw_cursor_show(void)
 {
-    return termdraw__output_buf_append("\033[?25h", 6);
+    return termdraw__output_buf_append_str("\033[?25h", 6);
+}
+
+int termdraw_cursor_move(unsigned row, unsigned col)
+{
+    int row_count, col_count;
+    bool in_bounds = false;
+
+    if (row == termdraw__cursor_row &&
+        col == termdraw__cursor_col)
+    {
+        return 0;
+    }
+
+    row_count = termdraw_get_rows();
+    col_count = termdraw_get_cols();
+    in_bounds = (row <= (unsigned)row_count &&
+                 col <= (unsigned)col_count);
+
+    if (row_count == -1 || col_count == -1 || !in_bounds)
+    {
+        return -1;
+    }
+
+    /* ESC[{line};{column}H */
+
+    /* TODO: add termdraw__output_buf_append_fmt() */
+    if (termdraw__output_buf_append_str("\033[", 2) == -1 ||
+        termdraw__output_buf_append_uint(row)       == -1 ||
+        termdraw__output_buf_append_str(";", 1)     == -1 ||
+        termdraw__output_buf_append_uint(col)       == -1 ||
+        termdraw__output_buf_append_str("H", 1)     == -1)
+    {
+        return -1;
+    }
+
+    termdraw__cursor_row = row;
+    termdraw__cursor_col = col;
+
+    return 0;
 }
 
 
