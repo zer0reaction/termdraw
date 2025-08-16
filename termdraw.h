@@ -7,12 +7,18 @@
 
 
 #include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
+#include <stdint.h>
+
+#include <assert.h>
+#include <string.h>
 
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <termios.h>
+
+
+typedef uint32_t termdraw_rune;
 
 extern int  termdraw_initialize(void);
 extern void termdraw_destroy(void);
@@ -29,6 +35,8 @@ extern int  termdraw_cursor_show(void);
 extern int  termdraw_cursor_get_row(void);
 extern int  termdraw_cursor_get_col(void);
 extern int  termdraw_cursor_move(unsigned row, unsigned col);
+
+extern int  termdraw_add_rune(termdraw_rune rune);
 
 #endif /* TERMDRAW_H_ */
 
@@ -287,6 +295,19 @@ int termdraw_cursor_get_row(void)
 int termdraw_cursor_get_col(void)
 {
     return termdraw__cursor_col;
+}
+
+int termdraw_add_rune(termdraw_rune rune)
+{
+    if (rune > 127)
+    {
+        assert(0 && "currently supporting only ASCII characters");
+    }
+
+    {
+        char c = (char)rune;
+        return termdraw__output_buf_append_str(&c, 1);
+    }
 }
 
 
