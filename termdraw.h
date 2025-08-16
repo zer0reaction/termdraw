@@ -26,6 +26,8 @@ extern int  termdraw_input_get_char(char *c);
 
 extern int  termdraw_cursor_hide(void);
 extern int  termdraw_cursor_show(void);
+extern int  termdraw_cursor_get_row(void);
+extern int  termdraw_cursor_get_col(void);
 extern int  termdraw_cursor_move(unsigned row, unsigned col);
 
 #endif /* TERMDRAW_H_ */
@@ -275,6 +277,16 @@ int termdraw_cursor_move(unsigned row, unsigned col)
     termdraw__cursor_col = col;
 
     return 0;
+}
+
+int termdraw_cursor_get_row(void)
+{
+    return termdraw__cursor_row;
+}
+
+int termdraw_cursor_get_col(void)
+{
+    return termdraw__cursor_col;
 }
 
 
