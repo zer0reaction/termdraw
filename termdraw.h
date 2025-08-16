@@ -38,6 +38,12 @@ extern int  termdraw_cursor_move(unsigned row, unsigned col);
 
 extern int  termdraw_add_rune(termdraw_rune rune);
 
+extern int  termdraw_style_reset(void);
+extern int  termdraw_style_bold(void);
+extern int  termdraw_style_italic(void);
+extern int  termdraw_style_underline(void);
+extern int  termdraw_style_strikethrough(void);
+
 #endif /* TERMDRAW_H_ */
 
 
@@ -308,6 +314,31 @@ int termdraw_add_rune(termdraw_rune rune)
         char c = (char)rune;
         return termdraw__output_buf_append_str(&c, 1);
     }
+}
+
+int termdraw_style_reset(void)
+{
+    return termdraw__output_buf_append_str("\033[0m", 4);
+}
+
+int termdraw_style_bold(void)
+{
+    return termdraw__output_buf_append_str("\033[1m", 4);
+}
+
+int termdraw_style_italic(void)
+{
+    return termdraw__output_buf_append_str("\033[3m", 4);
+}
+
+int termdraw_style_underline(void)
+{
+    return termdraw__output_buf_append_str("\033[4m", 4);
+}
+
+int termdraw_style_strikethrough(void)
+{
+    return termdraw__output_buf_append_str("\033[9m", 4);
 }
 
 
