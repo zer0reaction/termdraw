@@ -17,52 +17,52 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 
-#define TERMDRAW_MODE_BOLD          1
-#define TERMDRAW_MODE_DIM           2
-#define TERMDRAW_MODE_ITALIC        3
-#define TERMDRAW_MODE_UNDERLINE     4
-#define TERMDRAW_MODE_BLINKING      5
-#define TERMDRAW_MODE_REVERSE       7
-#define TERMDRAW_MODE_INVISIBLE     8
-#define TERMDRAW_MODE_STRIKETHROUGH 9
+#define TERMDRAW_MODE_BOLD              ((uint64_t)1 << 0)
+#define TERMDRAW_MODE_DIM               ((uint64_t)1 << 1)
+#define TERMDRAW_MODE_ITALIC            ((uint64_t)1 << 2)
+#define TERMDRAW_MODE_UNDERLINE         ((uint64_t)1 << 3)
+#define TERMDRAW_MODE_BLINKING          ((uint64_t)1 << 4)
+#define TERMDRAW_MODE_REVERSE           ((uint64_t)1 << 5)
+#define TERMDRAW_MODE_INVISIBLE         ((uint64_t)1 << 6)
+#define TERMDRAW_MODE_STRIKETHROUGH     ((uint64_t)1 << 7)
 
-#define TERMDRAW_MODE_FG_BLACK   30
-#define TERMDRAW_MODE_FG_RED     31
-#define TERMDRAW_MODE_FG_GREEN   32
-#define TERMDRAW_MODE_FG_YELLOW  33
-#define TERMDRAW_MODE_FG_BLUE    34
-#define TERMDRAW_MODE_FG_MAGENTA 35
-#define TERMDRAW_MODE_FG_CYAN    36
-#define TERMDRAW_MODE_FG_WHITE   37
-#define TERMDRAW_MODE_FG_DEFAULT 39
+#define TERMDRAW_MODE_FG_BLACK          ((uint64_t)1 << 8)
+#define TERMDRAW_MODE_FG_RED            ((uint64_t)1 << 9)
+#define TERMDRAW_MODE_FG_GREEN          ((uint64_t)1 << 10)
+#define TERMDRAW_MODE_FG_YELLOW         ((uint64_t)1 << 11)
+#define TERMDRAW_MODE_FG_BLUE           ((uint64_t)1 << 12)
+#define TERMDRAW_MODE_FG_MAGENTA        ((uint64_t)1 << 13)
+#define TERMDRAW_MODE_FG_CYAN           ((uint64_t)1 << 14)
+#define TERMDRAW_MODE_FG_WHITE          ((uint64_t)1 << 15)
+#define TERMDRAW_MODE_FG_DEFAULT        ((uint64_t)1 << 16)
 
-#define TERMDRAW_MODE_BG_BLACK   40
-#define TERMDRAW_MODE_BG_RED     41
-#define TERMDRAW_MODE_BG_GREEN   42
-#define TERMDRAW_MODE_BG_YELLOW  43
-#define TERMDRAW_MODE_BG_BLUE    44
-#define TERMDRAW_MODE_BG_MAGENTA 45
-#define TERMDRAW_MODE_BG_CYAN    46
-#define TERMDRAW_MODE_BG_WHITE   47
-#define TERMDRAW_MODE_BG_DEFAULT 49
+#define TERMDRAW_MODE_BG_BLACK          ((uint64_t)1 << 17)
+#define TERMDRAW_MODE_BG_RED            ((uint64_t)1 << 18)
+#define TERMDRAW_MODE_BG_GREEN          ((uint64_t)1 << 19)
+#define TERMDRAW_MODE_BG_YELLOW         ((uint64_t)1 << 20)
+#define TERMDRAW_MODE_BG_BLUE           ((uint64_t)1 << 21)
+#define TERMDRAW_MODE_BG_MAGENTA        ((uint64_t)1 << 22)
+#define TERMDRAW_MODE_BG_CYAN           ((uint64_t)1 << 23)
+#define TERMDRAW_MODE_BG_WHITE          ((uint64_t)1 << 24)
+#define TERMDRAW_MODE_BG_DEFAULT        ((uint64_t)1 << 25)
 
-#define TERMDRAW_MODE_FG_BRIGHT_BLACK   90
-#define TERMDRAW_MODE_FG_BRIGHT_RED     91
-#define TERMDRAW_MODE_FG_BRIGHT_GREEN   92
-#define TERMDRAW_MODE_FG_BRIGHT_YELLOW  93
-#define TERMDRAW_MODE_FG_BRIGHT_BLUE    94
-#define TERMDRAW_MODE_FG_BRIGHT_MAGENTA 95
-#define TERMDRAW_MODE_FG_BRIGHT_CYAN    96
-#define TERMDRAW_MODE_FG_BRIGHT_WHITE   97
+#define TERMDRAW_MODE_FG_BRIGHT_BLACK   ((uint64_t)1 << 26)
+#define TERMDRAW_MODE_FG_BRIGHT_RED     ((uint64_t)1 << 27)
+#define TERMDRAW_MODE_FG_BRIGHT_GREEN   ((uint64_t)1 << 28)
+#define TERMDRAW_MODE_FG_BRIGHT_YELLOW  ((uint64_t)1 << 29)
+#define TERMDRAW_MODE_FG_BRIGHT_BLUE    ((uint64_t)1 << 30)
+#define TERMDRAW_MODE_FG_BRIGHT_MAGENTA ((uint64_t)1 << 31)
+#define TERMDRAW_MODE_FG_BRIGHT_CYAN    ((uint64_t)1 << 32)
+#define TERMDRAW_MODE_FG_BRIGHT_WHITE   ((uint64_t)1 << 33)
 
-#define TERMDRAW_MODE_BG_BRIGHT_BLACK   100
-#define TERMDRAW_MODE_BG_BRIGHT_RED     101
-#define TERMDRAW_MODE_BG_BRIGHT_GREEN   102
-#define TERMDRAW_MODE_BG_BRIGHT_YELLOW  103
-#define TERMDRAW_MODE_BG_BRIGHT_BLUE    104
-#define TERMDRAW_MODE_BG_BRIGHT_MAGENTA 105
-#define TERMDRAW_MODE_BG_BRIGHT_CYAN    106
-#define TERMDRAW_MODE_BG_BRIGHT_WHITE   107
+#define TERMDRAW_MODE_BG_BRIGHT_BLACK   ((uint64_t)1 << 34)
+#define TERMDRAW_MODE_BG_BRIGHT_RED     ((uint64_t)1 << 35)
+#define TERMDRAW_MODE_BG_BRIGHT_GREEN   ((uint64_t)1 << 36)
+#define TERMDRAW_MODE_BG_BRIGHT_YELLOW  ((uint64_t)1 << 37)
+#define TERMDRAW_MODE_BG_BRIGHT_BLUE    ((uint64_t)1 << 38)
+#define TERMDRAW_MODE_BG_BRIGHT_MAGENTA ((uint64_t)1 << 39)
+#define TERMDRAW_MODE_BG_BRIGHT_CYAN    ((uint64_t)1 << 40)
+#define TERMDRAW_MODE_BG_BRIGHT_WHITE   ((uint64_t)1 << 41)
 
 typedef uint32_t termdraw_rune_t;
 
@@ -91,7 +91,7 @@ extern int  termdraw_cursor_move(unsigned row, unsigned col);
 
 extern int  termdraw_add_rune(termdraw_rune_t rune);
 
-extern int  termdraw_mode_set(unsigned mode);
+extern int  termdraw_mode_set(uint64_t flag);
 extern int  termdraw_mode_reset(void);
 
 #endif /* TERMDRAW_H_ */
@@ -104,6 +104,53 @@ extern int  termdraw_mode_reset(void);
 
 #ifdef TERMDRAW_IMPLEMENTATION
 
+
+#define TERMDRAW__MODE_BOLD          1
+#define TERMDRAW__MODE_DIM           2
+#define TERMDRAW__MODE_ITALIC        3
+#define TERMDRAW__MODE_UNDERLINE     4
+#define TERMDRAW__MODE_BLINKING      5
+#define TERMDRAW__MODE_REVERSE       7
+#define TERMDRAW__MODE_INVISIBLE     8
+#define TERMDRAW__MODE_STRIKETHROUGH 9
+
+#define TERMDRAW__MODE_FG_BLACK   30
+#define TERMDRAW__MODE_FG_RED     31
+#define TERMDRAW__MODE_FG_GREEN   32
+#define TERMDRAW__MODE_FG_YELLOW  33
+#define TERMDRAW__MODE_FG_BLUE    34
+#define TERMDRAW__MODE_FG_MAGENTA 35
+#define TERMDRAW__MODE_FG_CYAN    36
+#define TERMDRAW__MODE_FG_WHITE   37
+#define TERMDRAW__MODE_FG_DEFAULT 39
+
+#define TERMDRAW__MODE_BG_BLACK   40
+#define TERMDRAW__MODE_BG_RED     41
+#define TERMDRAW__MODE_BG_GREEN   42
+#define TERMDRAW__MODE_BG_YELLOW  43
+#define TERMDRAW__MODE_BG_BLUE    44
+#define TERMDRAW__MODE_BG_MAGENTA 45
+#define TERMDRAW__MODE_BG_CYAN    46
+#define TERMDRAW__MODE_BG_WHITE   47
+#define TERMDRAW__MODE_BG_DEFAULT 49
+
+#define TERMDRAW__MODE_FG_BRIGHT_BLACK   90
+#define TERMDRAW__MODE_FG_BRIGHT_RED     91
+#define TERMDRAW__MODE_FG_BRIGHT_GREEN   92
+#define TERMDRAW__MODE_FG_BRIGHT_YELLOW  93
+#define TERMDRAW__MODE_FG_BRIGHT_BLUE    94
+#define TERMDRAW__MODE_FG_BRIGHT_MAGENTA 95
+#define TERMDRAW__MODE_FG_BRIGHT_CYAN    96
+#define TERMDRAW__MODE_FG_BRIGHT_WHITE   97
+
+#define TERMDRAW__MODE_BG_BRIGHT_BLACK   100
+#define TERMDRAW__MODE_BG_BRIGHT_RED     101
+#define TERMDRAW__MODE_BG_BRIGHT_GREEN   102
+#define TERMDRAW__MODE_BG_BRIGHT_YELLOW  103
+#define TERMDRAW__MODE_BG_BRIGHT_BLUE    104
+#define TERMDRAW__MODE_BG_BRIGHT_MAGENTA 105
+#define TERMDRAW__MODE_BG_BRIGHT_CYAN    106
+#define TERMDRAW__MODE_BG_BRIGHT_WHITE   107
 
 static struct
 {
@@ -118,6 +165,60 @@ static struct
 };
 
 static struct termios termdraw__original_settings = {0};
+
+struct
+{
+    uint64_t flag;
+    unsigned value;
+} termdraw__flags_mode[] = {
+    { .flag = TERMDRAW_MODE_BOLD,              .value = TERMDRAW__MODE_BOLD },
+    { .flag = TERMDRAW_MODE_DIM,               .value = TERMDRAW__MODE_DIM },
+    { .flag = TERMDRAW_MODE_ITALIC,            .value = TERMDRAW__MODE_ITALIC },
+    { .flag = TERMDRAW_MODE_UNDERLINE,         .value = TERMDRAW__MODE_UNDERLINE },
+    { .flag = TERMDRAW_MODE_BLINKING,          .value = TERMDRAW__MODE_BLINKING },
+    { .flag = TERMDRAW_MODE_REVERSE,           .value = TERMDRAW__MODE_REVERSE },
+    { .flag = TERMDRAW_MODE_INVISIBLE,         .value = TERMDRAW__MODE_INVISIBLE },
+    { .flag = TERMDRAW_MODE_STRIKETHROUGH,     .value = TERMDRAW__MODE_STRIKETHROUGH },
+
+    { .flag = TERMDRAW_MODE_FG_BLACK,          .value = TERMDRAW__MODE_FG_BLACK },
+    { .flag = TERMDRAW_MODE_FG_RED,            .value = TERMDRAW__MODE_FG_RED },
+    { .flag = TERMDRAW_MODE_FG_GREEN,          .value = TERMDRAW__MODE_FG_GREEN },
+    { .flag = TERMDRAW_MODE_FG_YELLOW,         .value = TERMDRAW__MODE_FG_YELLOW },
+    { .flag = TERMDRAW_MODE_FG_BLUE,           .value = TERMDRAW__MODE_FG_BLUE },
+    { .flag = TERMDRAW_MODE_FG_MAGENTA,        .value = TERMDRAW__MODE_FG_MAGENTA },
+    { .flag = TERMDRAW_MODE_FG_CYAN,           .value = TERMDRAW__MODE_FG_CYAN },
+    { .flag = TERMDRAW_MODE_FG_WHITE,          .value = TERMDRAW__MODE_FG_WHITE },
+    { .flag = TERMDRAW_MODE_FG_DEFAULT,        .value = TERMDRAW__MODE_FG_DEFAULT },
+
+    { .flag = TERMDRAW_MODE_BG_BLACK,          .value = TERMDRAW__MODE_BG_BLACK },
+    { .flag = TERMDRAW_MODE_BG_RED,            .value = TERMDRAW__MODE_BG_RED },
+    { .flag = TERMDRAW_MODE_BG_GREEN,          .value = TERMDRAW__MODE_BG_GREEN },
+    { .flag = TERMDRAW_MODE_BG_YELLOW,         .value = TERMDRAW__MODE_BG_YELLOW },
+    { .flag = TERMDRAW_MODE_BG_BLUE,           .value = TERMDRAW__MODE_BG_BLUE },
+    { .flag = TERMDRAW_MODE_BG_MAGENTA,        .value = TERMDRAW__MODE_BG_MAGENTA },
+    { .flag = TERMDRAW_MODE_BG_CYAN,           .value = TERMDRAW__MODE_BG_CYAN },
+    { .flag = TERMDRAW_MODE_BG_WHITE,          .value = TERMDRAW__MODE_BG_WHITE },
+    { .flag = TERMDRAW_MODE_BG_DEFAULT,        .value = TERMDRAW__MODE_BG_DEFAULT },
+
+    { .flag = TERMDRAW_MODE_FG_BRIGHT_BLACK,   .value = TERMDRAW__MODE_FG_BRIGHT_BLACK },
+    { .flag = TERMDRAW_MODE_FG_BRIGHT_RED,     .value = TERMDRAW__MODE_FG_BRIGHT_RED },
+    { .flag = TERMDRAW_MODE_FG_BRIGHT_GREEN,   .value = TERMDRAW__MODE_FG_BRIGHT_GREEN },
+    { .flag = TERMDRAW_MODE_FG_BRIGHT_YELLOW,  .value = TERMDRAW__MODE_FG_BRIGHT_YELLOW },
+    { .flag = TERMDRAW_MODE_FG_BRIGHT_BLUE,    .value = TERMDRAW__MODE_FG_BRIGHT_BLUE },
+    { .flag = TERMDRAW_MODE_FG_BRIGHT_MAGENTA, .value = TERMDRAW__MODE_FG_BRIGHT_MAGENTA },
+    { .flag = TERMDRAW_MODE_FG_BRIGHT_CYAN,    .value = TERMDRAW__MODE_FG_BRIGHT_CYAN },
+    { .flag = TERMDRAW_MODE_FG_BRIGHT_WHITE,   .value = TERMDRAW__MODE_FG_BRIGHT_WHITE },
+
+    { .flag = TERMDRAW_MODE_BG_BRIGHT_BLACK,   .value = TERMDRAW__MODE_BG_BRIGHT_BLACK },
+    { .flag = TERMDRAW_MODE_BG_BRIGHT_RED,     .value = TERMDRAW__MODE_BG_BRIGHT_RED },
+    { .flag = TERMDRAW_MODE_BG_BRIGHT_GREEN,   .value = TERMDRAW__MODE_BG_BRIGHT_GREEN },
+    { .flag = TERMDRAW_MODE_BG_BRIGHT_YELLOW,  .value = TERMDRAW__MODE_BG_BRIGHT_YELLOW },
+    { .flag = TERMDRAW_MODE_BG_BRIGHT_BLUE,    .value = TERMDRAW__MODE_BG_BRIGHT_BLUE },
+    { .flag = TERMDRAW_MODE_BG_BRIGHT_MAGENTA, .value = TERMDRAW__MODE_BG_BRIGHT_MAGENTA },
+    { .flag = TERMDRAW_MODE_BG_BRIGHT_CYAN,    .value = TERMDRAW__MODE_BG_BRIGHT_CYAN },
+    { .flag = TERMDRAW_MODE_BG_BRIGHT_WHITE,   .value = TERMDRAW__MODE_BG_BRIGHT_WHITE },
+};
+#define TERMDRAW__FLAGS_MODE_COUNT (sizeof(termdraw__flags_mode) / sizeof(*termdraw__flags_mode))
 
 /* NOTE: row and col start from 1 */
 static unsigned termdraw__cursor_row = -1;
@@ -370,14 +471,22 @@ int termdraw_mode_reset(void)
     return termdraw__output_buf_append_str("\033[0m", 4);
 }
 
-/* TODO: add support for | */
-int termdraw_mode_set(unsigned mode)
+int termdraw_mode_set(uint64_t flag)
 {
-    if (termdraw__output_buf_append_str("\033[", 2) == -1 ||
-        termdraw__output_buf_append_uint(mode)      == -1 ||
-        termdraw__output_buf_append_str("m", 1)     == -1)
+    unsigned i = 0;
+
+    for (i = 0; i < TERMDRAW__FLAGS_MODE_COUNT; i++)
     {
-        return -1;
+        if (flag & termdraw__flags_mode[i].flag)
+        {
+            /* TODO: optimize with ESC[1;34;{...}m notation */
+            if (termdraw__output_buf_append_str("\033[", 2)                     == -1 ||
+                termdraw__output_buf_append_uint(termdraw__flags_mode[i].value) == -1 ||
+                termdraw__output_buf_append_str("m", 1)                         == -1)
+            {
+                return -1;
+            }
+        }
     }
 
     return 0;
